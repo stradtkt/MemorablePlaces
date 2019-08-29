@@ -6,9 +6,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -26,6 +28,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -119,6 +122,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onMapLongClick(LatLng latLng) {
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -136,6 +140,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch(IOException e) {
             e.printStackTrace();
         }
+        if(address == "") {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+            address = simpleDateFormat.format(new Date());
+        }
         mMap.addMarker(new MarkerOptions().position(latLng).title(address));
+        MainActivity.places.add(address);
+        MainActivity.locations.add(latLng);
+        Toast.makeText(this, "Location Saved", Toast.LENGTH_LONG).show();
     }
 }
