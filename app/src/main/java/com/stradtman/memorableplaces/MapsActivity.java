@@ -1,6 +1,7 @@
 package com.stradtman.memorableplaces;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -98,7 +99,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Location lastKnownLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 centerMapOnLocation(lastKnownLocation, "Your Location");
             } else {
-
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         }
 
